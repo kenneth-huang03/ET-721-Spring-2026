@@ -4,8 +4,10 @@
 """
 
 username = input("Enter a username: ")
-print(f"Welcome to Git Commands {username}")
+print("Welcome to Git Commands")
 
-# Testing Lines
-num = 8
-print(f"Double of {num} is {num*2}")
+# Testing 2: Calculate Hypotenuse
+x = 5
+y = 3
+h = (x**2 + y**2)**0.5
+print(f"The hypotenuse of {x} and {y} is {h}")
