@@ -3,6 +3,7 @@
     Lab 2 | Git Commands
 """
 
+username = input("Enter a username: ")
 print("Welcome to Git Commands")
 
 # Testing 2: Calculate Hypotenuse
