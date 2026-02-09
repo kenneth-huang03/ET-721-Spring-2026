@@ -1,4 +1,5 @@
 import math
+import random
 
 # Example 1
 def area_rectangle(height, width):
@@ -21,3 +22,19 @@ def calculate_distance_between_two_points(x1, y1, x2, y2):
 
 def display_distance_result(x1, y1, x2, y2, distance):
     print(f"Distance between the points ({x1}, {y1}) and ({x2}, {y2}) is {round(distance, 2)}")
+
+def generate_randomish_value(min, max):
+    return random.randrange(min, max)
+
+def guessing_game(guess, actual):
+    if guess < actual:
+        print("The number is larger than the guess")
+    elif guess > actual:
+        print("The number is smaller than the guess")
+    elif guess == actual:
+        print("You got it!")
+        return True
+    else:
+        print("Uhh")
+    return False
+

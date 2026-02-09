@@ -22,3 +22,9 @@ y2 = collect_number("y2")
 distance = calculate_distance_between_two_points(x1, y1, x2, y2)
 
 display_distance_result(x1, y1, x2, y2, distance)
+
+HIDDEN = generate_randomish_value(0, 100)
+while True:
+    guess = int(input("Guess the number!\n> "))
+    if guessing_game(guess, HIDDEN):
+        break
