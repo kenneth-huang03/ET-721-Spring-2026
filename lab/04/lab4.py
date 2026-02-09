@@ -66,3 +66,19 @@ print(f"Current Dictionary of Contacts:\n{contacts}")
 contacts.update({"Annie": "718-888-999"})
 print(f"Updated Dictionary of Contacts:\n{contacts}")
 
+print("Exercises")
+
+users = ["peterpan@yahoo.com","annie@hotmail.com","Carl@hotmail.com","martha@gmail.com","cassie@yahoo.com","Josue@hotmail.com","John@hotmail.com"]
+using = {
+    "gmail": 0,
+    "hotmail": 0,
+    "yahoo": 0,
+}
+
+for user in users:
+    for mail_service in using.keys():
+        if mail_service in user:
+            using[mail_service] += 1
+            break
+
+print(using)
