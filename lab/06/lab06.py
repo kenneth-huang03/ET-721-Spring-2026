@@ -63,7 +63,7 @@ print("Exercise")
 class BankAccount: #Implicitly a child of object
     def __init__(self, account_number, account_holder, balance = 250.50):
         self.number = account_number
-        self.holder = account.holder
+        self.holder = account_holder
         self.balance = balance
 
     def deposit(self, amount):
