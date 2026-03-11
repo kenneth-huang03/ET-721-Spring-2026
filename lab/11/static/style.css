@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+img {
+    width: 100%;
+    display: inline-block;
+}
+
+.title {
+    text-align: center;
+    color: magenta;
+}
+
+.subtitle {
+    padding: 1rem;
+    text-align: center;
+    background-color: rgb(180, 200, 230);
+}
+
+.instock { 
+    color: green;
+}
+
+.outstock {
+    color: red;
+}

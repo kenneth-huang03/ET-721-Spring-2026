@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My Flask App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <h2 class="subtitle">Welcome to Flask! {{username}}</h2>
+    <figure>
+        <img src="{{url_for('static', filename='pexels-pavan-prasad-2156671405-36431856.jpg')}}" alt="Image of a dragonfly">
+    </figure>
+
+    <h2 class=subtitle">Lists</h2>
+    {% for i in fruitlist %}
+        <p>{{i}}</p>
+    {% endfor %}
+
+    <h3>Check if {{f}} is in fruitlist</h3>
+    {% if f in fruitlist %}
+        <p class="instock">Great! We have {{f}} today!</p>
+    {% else %}
+        <p class="outstock">We do not have {{f}} today.</p>
+    {% endif %}
+</body>
+</html>

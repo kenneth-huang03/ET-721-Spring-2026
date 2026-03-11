@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>My Flask App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+    {% for image in images %}
+        <figure>
+            <image src="{{url_for('static', filename=image)}}">
+        </figure>
+    {% endfor %}
+</body>
+</html>
