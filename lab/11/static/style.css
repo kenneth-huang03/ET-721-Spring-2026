@@ -25,3 +25,18 @@ img {
 .outstock {
     color: red;
 }
+
+/* Base.html */
+.main-container {
+    padding: 2rem;
+    border: solid gray 2px;
+    background-color: aliceblue;
+    width: 700px;
+    margin: 2rem auto;
+}
+
+.footer {
+    padding: 2rem;
+    color: gainsboro;
+    text-align: center;
+}

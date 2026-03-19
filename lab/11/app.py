@@ -31,7 +31,7 @@ def about():
 
 @app.route("/quotes")
 def quotes(): 
-    return "Insert Generic Quote Here"
+    return render_template("quotes.html")
 
 if __name__ == "__main__":
     app.run()

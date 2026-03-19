@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Employee Form</title>
+</head>
+
+<body>
+    <h1 class="title">Kenneth Huang</h1>
+    <main class="container">
+        <h2>Add Employee</h2>
+        <form method="post">
+            <div>
+                <label for="employee-name">Name:</label>
+                <input id="employee-name" type="text" name="name" required />
+            </div>
+            <div>
+                <label for="employee-age">Age:</label>
+                <input id="employee-age" type="number" name="age" required />
+            </div>
+            <div>
+                <button type="submit">SUBMIT</button>
+            </div>
+
+            <div class="database-message">
+                <p>{{ message }}</p>
+            </div>
+        </form>
+    </main>
+    <footer class="footer">Mini-Form App W/ Flask @ March 2026 - By Kenneth Huang</footer>
+</body>
+</html>
