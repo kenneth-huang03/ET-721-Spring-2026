@@ -6,8 +6,9 @@ Lab 15 | REST API and Unit Tests in a Flask Application
 from flask import Flask, jsonify, redirect, render_template, request
 
 FApp = Flask(__name__)
-URI = "http://127.0.0.1:5000" 
+URI = "https://knei.dev/ET721"
 
+counter = 0
 
 items = {}
 
@@ -19,25 +20,41 @@ def index():
 def  create_item():
     data = request.get_json()
 
-    item_id = str(len(items)+1) # Please never use this in an actual database, if you 
+    global counter
+    counter += 1
+    # Please never use this in an actual database, if you 
     # delete something all the sudden you have stuff with the same id or overwriting 
     # each other
+    # counter = str(len(items))
 
-    items[item_id] = data
+    items[str(counter)] = data
 
-    return jsonify({"id": item_id, "item": data}), 201
+    return jsonify({"id": counter, "item": data}), 201
 
 @FApp.route("/items", methods=["GET"])
 def get_items():
     return jsonify(items)
 
-@FApp.route("/items/<item_id>", methods=["GET"])
-def get_one_item(item_id):
+@FApp.route("/items/<item_id>", methods=["DELETE", "GET", "PUT"])
+def handle_item(item_id):
     item = items.get(item_id)
-    if not item:
-        return jsonify({"message": "Error: Item Not Found"}), 404
+    if request.method == "GET":
+        if not item:
+            return jsonify({"message": "Error: Item Not Found"}), 404
+        return jsonify(item), 200
+    elif request.method == "PUT":
+        if not item:
+            return render_template("error.html", message="NOT FOUND", item = item), 404
 
-    return jsonify(item), 200
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "Error: Invalid Input"}), 400
+
+        items[item_id] = data
+        return render_template("update.html", item_id = item_id, item = data)
+    elif request.method == "DELETE":
+        deleted = items.pop(item_id)
+        return render_template("delete.html", item_id = item_id, item = deleted)
 
 
 if __name__ == "__main__":

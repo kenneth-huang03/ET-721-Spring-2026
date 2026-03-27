@@ -4,31 +4,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
     <title>Create Item</title>
 </head>
 <body>
     <h2>Create Item by Kenneth Huang</h2>
-    <form id="itemform">
-        <div>
-            <label>
-                Name:
-                <input id="name" type="text" required>
-            </label>
-        </div>
+    <div class="itemformcontainer">
+        <form id="itemform">
+            <div>
+                <label>
+                    Name:
+                    <input id="name" type="text" required>
+                </label>
+            </div>
+    
+            <div>
+                <label>
+                    Price: 
+                    <input id="price" type="number" required>
+                </label>
+            </div>
+    
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+    
+            <p id="response"></p>
+        </form>
+    </div>
 
-        <div>
-            <label>
-                Price: 
-                <input id="price" type="number" required>
-            </label>
-        </div>
+    <section>
+        <hr>
 
-        <div>
-            <button type="submit">Submit</button>
-        </div>
+        <h2>ALL ITEMS</h2>
+        <button onclick="loaditems()">LOAD ITEMS</button>
 
-        <p id="response"></p>
-    </form>
+        <ul id="itemlist"></ul>
+    </section>
+
+    <section id="update" style="display:none;">
+        <h3>Update Item</h3>
+        <input id="updateId" type="hidden">
+
+        <label>
+            Name: <input id="updateName" type="text">
+        </label>
+        
+        <label>
+            Price: <input id="updatePrice" type="number">
+        </label>
+
+        <button onclick="updateitem()">Save Changes</button>
+    </section>
 
     <script>
         document.querySelector("#itemform").addEventListener("submit", async (event) => {
@@ -52,6 +80,55 @@
                 document.querySelector("#response").innerHTML = `"{{ uri }}/items", Response: Error\n${error}`;
             }
         });
+
+        async function loaditems() {
+            const response = await fetch("{{ uri }}/items");
+            const data = await response.json();
+
+            const list = document.querySelector("#itemlist");
+            list.innerHTML = "";
+
+            for ( const id in data ) {
+                const item = data[id];
+
+                const li = document.createElement("li");
+                li.innerHTML = `ID: ${id} | Name: ${item.name} | Price: ${item.price}
+                <button onclick="showupdateform(${id}, '${item.name}', ${item.price})">Update</button>
+                <button onclick="deleteitem(${id})">Delete</button>`;
+
+                list.appendChild(li);
+            }
+        }
+
+        async function showupdateform(item_id, name, price) {
+            document.querySelector("#update").style.display = "block";
+
+            document.querySelector("#updateId").value = item_id;
+            document.querySelector("#updateName").value = name;
+            document.querySelector("#updatePrice").value = price;
+        }
+
+        async function updateitem() {
+            const response = await fetch(`{{ uri }}/items/${document.querySelector("#updateId").value}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({name: document.querySelector("#updateName").value, price: document.querySelector("#updatePrice").value})
+            });
+
+            const html = await response.text();
+            document.body.innerHTML = html;
+        }
+
+        async function deleteitem(item_id) {
+            const response = await fetch(`{{ uri }}/items/${item_id}`, {
+                method: "DELETE",
+            });
+
+            const html = await response.text();
+            document.body.innerHTML = html;
+        }
     </script>
 </body>
 </html>
