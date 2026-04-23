@@ -6,7 +6,7 @@ Lab 15 | REST API and Unit Tests in a Flask Application
 from flask import Flask, jsonify, redirect, render_template, request
 
 FApp = Flask(__name__)
-URI = "http://localhost:5000"
+URI = "https://knei.dev/ET721"
 
 counter = 0
 
