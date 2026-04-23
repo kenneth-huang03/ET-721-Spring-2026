@@ -4,6 +4,12 @@ import mysql.connector
 
 App = Flask(__name__)
 
+import os
+if os.environ.get("_A_A_"):
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    App.wsgi_app = ProxyFix(App.wsgi_app, x_prefix=1)
+
+
 # Database Configuration
 # ======================
 
@@ -12,13 +18,19 @@ App.config["MYSQL_USER"]        = "flaskuser"
 App.config["MYSQL_PASSWORD"]    = "password123"
 App.config["MYSQL_DB"]          = "l16_todo"
 
-Database = mysql.connector.connect(
-    host        = App.config["MYSQL_HOST"],
-    user        = App.config["MYSQL_USER"],
-    password    = App.config["MYSQL_PASSWORD"],
-    database    = App.config["MYSQL_DB"],
+
+DatabaseConnectionPool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name           = "Pool",
+    pool_size           = 3,
+    pool_reset_session  = True,
+    host                = App.config["MYSQL_HOST"],
+    user                = App.config["MYSQL_USER"],
+    password            = App.config["MYSQL_PASSWORD"],
+    database            = App.config["MYSQL_DB"],
 )
 
+def getDatabase():
+    return DatabaseConnectionPool.get_connection()
 
 # Application Routes
 # ==================
@@ -31,7 +43,8 @@ def index():
 @App.route("/get_tasks", methods=["GET"])
 def get_tasks():
     try:
-        with Database.cursor(dictionary=True) as cursor:
+        database = getDatabase()
+        with database.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT * FROM tasks")
 
             tasks = cursor.fetchall()
@@ -41,6 +54,9 @@ def get_tasks():
         print(error)
         return jsonify({"MySQL Error": str(error)}), 500
 
+    finally:
+        database.close()
+
 
 @App.route("/add_task", methods=["POST"])
 def add_task():
@@ -48,10 +64,12 @@ def add_task():
     task = data.get("task")
 
     if task:
-        cursor = Database.cursor()
+        database = getDatabase()
+        cursor = database.cursor()
         cursor.execute("INSERT INTO tasks (task) VALUES (%s)", (task,))
-        Database.commit()
+        database.commit()
         cursor.close()
+        database.close()
         return jsonify({"status": "success"})
 
     return jsonify({"status": "error"})
@@ -62,21 +80,18 @@ def delete_task():
     data = request.get_json()
     id = data.get("id")
 
-    cursor = Database.cursor()
+    database = getDatabase()
+    cursor = database.cursor()
     cursor.execute("DELETE FROM tasks WHERE id = %s", (id,))
 
-    Database.commit()
+    database.commit()
     cursor.close()
+    database.close()
 
     return jsonify({"status": "deleted"})
 
 # Start Application
 # =================
 if __name__ == "__main__":
-    import os
-    if os.environ.get("_A_A_"):
-        from werkzeug.middleware.proxy_fix import ProxyFix
-        App.wsgi_app = ProxyFix(App.wsgi_app, x_prefix=1)
-
     App.run()
 
