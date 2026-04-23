@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta chatset = "utf-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <title>Image Uploader App</title>
+
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'image_uploader_style.css') }}">
+</head>
+<body>
+    <script src = "{{ url_for('static', filename = 'image_uploader_script.js') }}"></script>
+
+    <h1 class = "title">Image Uploader by Kenneth Huang</h1>
+
+    <p id = "message">Testing</p>
+    
+    <form id = "upload-form">
+        <input type = "file" name = "image" id = "image-input" required>
+        <button type = "submit" class = "image-submit">Upload</button>
+    </form>
+
+    <h2 class = "subtitle">Gallery</h2>
+    <div class = "gallery" id = "gallery">
+        <div class = "card">
+            <img src = "{{ url_for('static', filename = 'uploads/pexels-asemirski-36367318.jpg') }}"></img>
+    </div>
+</body>
+</html>
