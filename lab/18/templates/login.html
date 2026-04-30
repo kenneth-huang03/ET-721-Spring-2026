@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block sitetitle %}User Login{% endblock %}
+
+{% block content %}
+<h1 class = "title">Log In</h1>
+<form method = "POST" class = "login-form">
+    <section class = "form-section">
+        <input type = "email" name = "email" placeholder = "Type Email..." required />
+    </section>
+
+    <section class = "form-section">
+        <input type = "password" name = "password" placeholder = "Enter password..." required />
+    </section>
+
+    <button type = "submit" class = "submit-form">Log In</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p class = "flash_message">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class = "other-option-div">
+    <p>Don't have an account? <a href = "{{ url_for('signup_GET') }}">Sign up</a></p>
+</div>
+{% endblock %}

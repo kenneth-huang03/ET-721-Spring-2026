@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+
+.main-container {
+    background-color: aliceblue;
+    width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.footer {
+    background-color: rgb(10, 10, 10);
+    color: aliceblue;
+    padding: 1rem;
+    text-align: center;
+}
+
+.form-section {
+    margin-bottom: 1rem;
+}
+
+.form-section input {
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+}
+
+.title {
+    text-align: center;
+    color: darkblue;
+}
+
+.submit-form {
+    background-color: darkblue;
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    padding:  0.5rem 1rem;
+    transition: ease 200ms;
+}
+
+.submit-form:hover {
+    background-color: crimson;
+    font-weight: bolder;
+}
+
+.other-option-div {
+    margin-top: 3rem;
+}
+
+.other-option-div a {
+    color: forestgreen;
+    font-size: 1.1rem;
+}
+
+.other-option-div a:hover {
+    color: crimson;
+}
+
+.flash_message {
+    color: crimson;
+}
