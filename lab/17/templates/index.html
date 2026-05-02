@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang = "en">
 <head>
-    <meta chatset = "utf-8">
+    <base href = "https://knei.dev/ET721/">
+
+    <meta charset = "utf-8">
     <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     <title>Image Uploader App</title>
 
     <link rel = "stylesheet" href = "{{ url_for('static', filename = 'image_uploader_style.css') }}">
 </head>
 <body>
-    <script src = "{{ url_for('static', filename = 'image_uploader_script.js') }}"></script>
-
     <h1 class = "title">Image Uploader by Kenneth Huang</h1>
-
-    <p id = "message">Testing</p>
     
     <form id = "upload-form">
-        <input type = "file" name = "image" id = "image-input" required>
+        <input type = "file" name = "image" id = "image-input">
         <button type = "submit" class = "image-submit">Upload</button>
     </form>
 
+    <p id = "message">Testing</p>
+
     <h2 class = "subtitle">Gallery</h2>
     <div class = "gallery" id = "gallery">
-        <div class = "card">
-            <img src = "{{ url_for('static', filename = 'uploads/pexels-asemirski-36367318.jpg') }}"></img>
+        {% for image in images %}
+            <div class = "card" id = "image-{{image.id}}">
+                <img src = "{{ url_for('static', filename = 'uploads/' + image.file_name) }}"></img>
+               <button onclick="deleteImage({{image.id}})" class = "image-delete">X</button>
+            </div>
+        {% endfor %}
     </div>
+
+    <script src = "{{ url_for('static', filename = 'image_uploader_script.js') }}"></script>
 </body>
 </html>

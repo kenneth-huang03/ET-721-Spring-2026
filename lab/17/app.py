@@ -55,14 +55,17 @@ def index_GET():
 @App.route("/upload", methods = ["POST"])
 def upload_POST():
     if 'image' not in request.files:
+        print("Error 1")
         return jsonify({"error": "No image file provided"}), 400
     
     file = request.files["image"]
 
     if file.filename == '':
+        print("Error 2")
         return jsonify({"error": "Image file is missing name"}), 400
 
     if not (file or file_is_allowed(file.filename)):
+        print("Error 3")
         return jsonify({"error": "Image file type is not allowed"}), 400
 
     filename = secure_filename(file.filename)
@@ -71,15 +74,41 @@ def upload_POST():
     file.save(filepath)
         
     connection = get_database_connection()
-    cursor = conneciton.cursor()
+    cursor = connection.cursor()
 
-    cursor.execute("INSERT INTO images (filename) VALUES (%s)", (filename,))
+    cursor.execute("INSERT INTO images (file_name) VALUES (%s)", (filename,))
     connection.commit()
 
     cursor.close()
     connection.close()
 
     return jsonify({"message": "Image file uploaded successfully"}), 201    
+
+
+@App.route("/delete/<int:id>", methods = ["DELETE"])
+def delete_DELETE(id):
+    connection = get_database_connection()
+    cursor = connection.cursor(dictionary = True)
+    
+    cursor.execute("SELECT * FROM images WHERE id = %s", (id,))
+    image = cursor.fetchone()
+
+    if not image:
+        cursor.close()
+        connection.close()
+        return jsonify({"error": "Image file not found"}), 404
+
+    filepath = os.path.join(App.config["UPLOAD_FOLDER"], image["file_name"])
+    if os.path.exists(filepath):
+        os.remove(filepath)
+
+    cursor.execute("DELETE FROM images WHERE id = %s", (id,))
+    connection.commit()
+
+    cursor.close()
+    connection.close()
+
+    return jsonify({"message": "Image deleted successfully"}), 204
 
 
 if __name__ == "__main__":
