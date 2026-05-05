@@ -34,8 +34,8 @@ def login_GET():
 @App.route("/login", methods = ["POST"])
 def login_POST():
     connection = get_database_connection()
-
     cursor = connection.cursor()
+
     cursor.execute("SELECT username FROM users WHERE email = ? AND password = ?", (request.form["email"], request.form["password"]))
 
     user = cursor.fetchone()
@@ -58,7 +58,6 @@ def signup_GET():
 @App.route("/signup", methods = ["POST"])
 def signup_POST():
     connection = get_database_connection()
-
     cursor = connection.cursor()
 
     try:
@@ -70,9 +69,11 @@ def signup_POST():
         connection.commit()
         flash("Account created!")
         return redirect(url_for("login_GET"))
+
     except sqlite3.IntegrityError:
         flash("Email already exists!")
         return redirect(url_for("signup_GET"))
+
     finally:
         connection.close()
 
